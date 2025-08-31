@@ -198,7 +198,12 @@ class HealthTracker {
         currentEl.textContent = Math.round(current);
         targetEl.textContent = target;
         remainingEl.textContent = remaining > 0 ? `${Math.round(remaining)} remaining` : 'Goal reached! 🎉';
-        progressEl.style.width = `${percentage}%`;
+        
+        // Animate progress bar smoothly
+        progressEl.style.transition = 'width 1s cubic-bezier(0.4, 0, 0.2, 1)';
+        setTimeout(() => {
+            progressEl.style.width = `${percentage}%`;
+        }, 100);
 
         // Add visual feedback for completed goals
         const card = progressEl.closest('.progress-card');
