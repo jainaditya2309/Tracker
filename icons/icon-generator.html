@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Icon Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        #preview {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        canvas {
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 16px;
+            margin: 10px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        button {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏃‍♀️ Health Tracker PWA - Professional Icon Generator</h1>
+        
+        <div id="preview">
+            <h3>Icon Preview (192x192):</h3>
+            <canvas id="preview-canvas" width="192" height="192"></canvas>
+        </div>
+
+        <button onclick="generateAllIcons()">Generate Professional Icons</button>
+        <button onclick="generatePreview()">Refresh Preview</button>
+    </div>
+
+    <script>
+        function drawProfessionalHealthIcon(ctx, size) {
+            ctx.clearRect(0, 0, size, size);
+            
+            // Create sophisticated gradient
+            const bgGradient = ctx.createRadialGradient(size/2, size/2, 0, size/2, size/2, size/2);
+            bgGradient.addColorStop(0, '#8b5cf6');
+            bgGradient.addColorStop(0.6, '#6366f1');
+            bgGradient.addColorStop(1, '#4f46e5');
+            
+            // Draw background with shadow effect
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = size * 0.02;
+            ctx.shadowOffsetY = size * 0.01;
+            
+            ctx.fillStyle = bgGradient;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            
+            // Draw health cross symbol
+            ctx.fillStyle = 'white';
+            const centerX = size/2;
+            const centerY = size/2;
+            const crossSize = size * 0.15;
+            const crossThickness = size * 0.05;
+            
+            // Horizontal bar with rounded corners
+            ctx.beginPath();
+            ctx.roundRect(centerX - crossSize, centerY - crossThickness/2, crossSize * 2, crossThickness, crossThickness/2);
+            ctx.fill();
+            
+            // Vertical bar with rounded corners
+            ctx.beginPath();
+            ctx.roundRect(centerX - crossThickness/2, centerY - crossSize, crossThickness, crossSize * 2, crossThickness/2);
+            ctx.fill();
+            
+            // Add heart symbol
+            ctx.fillStyle = '#ec4899';
+            const heartSize = size * 0.08;
+            const heartY = centerY - size * 0.08;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, heartY + heartSize);
+            
+            // Left heart curve
+            ctx.bezierCurveTo(
+                centerX - heartSize/2, heartY,
+                centerX - heartSize, heartY + heartSize/3,
+                centerX, heartY + heartSize * 0.8
+            );
+            
+            // Right heart curve
+            ctx.bezierCurveTo(
+                centerX + heartSize, heartY + heartSize/3,
+                centerX + heartSize/2, heartY,
+                centerX, heartY + heartSize
+            );
+            
+            ctx.fill();
+            
+            // Add pulse line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.lineWidth = size * 0.008;
+            ctx.lineCap = 'round';
+            
+            const pulseY = centerY + size * 0.12;
+            const pulseWidth = size * 0.25;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX - pulseWidth, pulseY);
+            ctx.lineTo(centerX - pulseWidth * 0.6, pulseY);
+            ctx.lineTo(centerX - pulseWidth * 0.4, pulseY - size * 0.03);
+            ctx.lineTo(centerX - pulseWidth * 0.2, pulseY + size * 0.02);
+            ctx.lineTo(centerX, pulseY - size * 0.04);
+            ctx.lineTo(centerX + pulseWidth * 0.2, pulseY + size * 0.02);
+            ctx.lineTo(centerX + pulseWidth * 0.4, pulseY - size * 0.02);
+            ctx.lineTo(centerX + pulseWidth * 0.6, pulseY);
+            ctx.lineTo(centerX + pulseWidth, pulseY);
+            ctx.stroke();
+        }
+        
+        // Add roundRect support for older browsers
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.arcTo(x + width, y, x + width, y + height, radius);
+                this.arcTo(x + width, y + height, x, y + height, radius);
+                this.arcTo(x, y + height, x, y, radius);
+                this.arcTo(x, y, x + width, y, radius);
+                this.closePath();
+            };
+        }
+        
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            drawProfessionalHealthIcon(ctx, size);
+            return canvas.toDataURL('image/png');
+        }
+        
+        function downloadImage(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function generateAllIcons() {
+            const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            
+            sizes.forEach((size, index) => {
+                setTimeout(() => {
+                    const dataUrl = generateIcon(size);
+                    downloadImage(dataUrl, `icon-${size}x${size}.png`);
+                }, index * 200); // Stagger downloads
+            });
+            
+            alert(`Generating ${sizes.length} professional icons! Check your downloads folder and move them to the icons/ folder.`);
+        }
+        
+        function generatePreview() {
+            const canvas = document.getElementById('preview-canvas');
+            const ctx = canvas.getContext('2d');
+            drawProfessionalHealthIcon(ctx, 192);
+        }
+        
+        // Generate preview on load
+        window.addEventListener('load', generatePreview);
+    </script>
+</body>
+</html>

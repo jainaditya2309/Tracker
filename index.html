@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Tracker PWA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Health Tracker">
+    <meta name="msapplication-TileColor" content="#6366f1">
+    <meta name="msapplication-TileImage" content="icons/icon-144x144.png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <meta name="description" content="Track your daily health goals - calories, protein, water, and skincare routines">
+    <meta name="keywords" content="health, fitness, tracker, PWA, nutrition, skincare">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-background">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="floating-shape shape-5"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="app-title">
+                <span class="icon animate-bounce">🏃‍♀️</span>
+                Health Tracker
+                <span class="version">v2.0</span>
+            </h1>
+            <div class="header-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-icon">🌙</span>
+                </button>
+                <button id="install-btn" class="install-btn hidden">
+                    <span class="icon">📱</span>
+                    Install App
+                </button>
+            </div>
+        </header>
+
+        <!-- Daily Goals Setup -->
+        <section class="card goals-section">
+            <h2 class="section-title">
+                <span class="icon">🎯</span>
+                Daily Goals
+            </h2>
+            <div class="goals-grid">
+                <div class="goal-input">
+                    <label for="calorie-goal">Calories Goal:</label>
+                    <input type="number" id="calorie-goal" placeholder="2000" min="0">
+                </div>
+                <div class="goal-input">
+                    <label for="protein-goal">Protein Goal (g):</label>
+                    <input type="number" id="protein-goal" placeholder="100" min="0">
+                </div>
+                <div class="goal-input">
+                    <label for="water-goal">Water Goal (ml):</label>
+                    <input type="number" id="water-goal" placeholder="2000" min="0">
+                </div>
+                <div class="goal-input">
+                    <label for="morning-skincare">Morning Skincare:</label>
+                    <input type="time" id="morning-skincare" value="08:00">
+                </div>
+                <div class="goal-input">
+                    <label for="evening-skincare">Evening Skincare:</label>
+                    <input type="time" id="evening-skincare" value="22:00">
+                </div>
+            </div>
+            <button id="save-goals" class="btn-primary">Save Goals</button>
+        </section>
+
+        <!-- Daily Progress Dashboard -->
+        <section class="card dashboard-section">
+            <h2 class="section-title">
+                <span class="icon">📊</span>
+                Today's Progress
+            </h2>
+            
+            <!-- Nutrition Progress -->
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <h3>Calories</h3>
+                    <div class="progress-info">
+                        <span id="calorie-current">0</span> / <span id="calorie-target">0</span>
+                        <span class="remaining" id="calorie-remaining">0 remaining</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="calorie-progress" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>Protein (g)</h3>
+                    <div class="progress-info">
+                        <span id="protein-current">0</span> / <span id="protein-target">0</span>
+                        <span class="remaining" id="protein-remaining">0 remaining</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="protein-progress" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>Water (ml)</h3>
+                    <div class="progress-info">
+                        <span id="water-current">0</span> / <span id="water-target">0</span>
+                        <span class="remaining" id="water-remaining">0 remaining</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="water-progress" class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Input Section -->
+        <section class="card input-section">
+            <h2 class="section-title">
+                <span class="icon">➕</span>
+                Add Intake
+            </h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="calorie-input">Calories:</label>
+                    <div class="input-with-btn">
+                        <input type="number" id="calorie-input" placeholder="Enter calories" min="0">
+                        <button onclick="addIntake('calories')" class="btn-secondary">Add</button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="protein-input">Protein (g):</label>
+                    <div class="input-with-btn">
+                        <input type="number" id="protein-input" placeholder="Enter protein" min="0">
+                        <button onclick="addIntake('protein')" class="btn-secondary">Add</button>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="water-input">Water (ml):</label>
+                    <div class="input-with-btn">
+                        <input type="number" id="water-input" placeholder="Enter water" min="0">
+                        <button onclick="addIntake('water')" class="btn-secondary">Add</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skincare Tracker -->
+        <section class="card skincare-section">
+            <h2 class="section-title">
+                <span class="icon">✨</span>
+                Skincare Tracker
+            </h2>
+            <div class="skincare-times">
+                <div class="time-display">
+                    <span class="time-label">Morning:</span>
+                    <span id="morning-time">08:00</span>
+                </div>
+                <div class="time-display">
+                    <span class="time-label">Evening:</span>
+                    <span id="evening-time">22:00</span>
+                </div>
+            </div>
+            
+            <div class="skincare-checklist">
+                <h3>Today's Skincare Tasks</h3>
+                <div class="checklist-grid">
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="morning-cleansing">
+                        <span class="checkmark"></span>
+                        Morning Cleansing
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="morning-moisturizing">
+                        <span class="checkmark"></span>
+                        Morning Moisturizing
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="evening-cleansing">
+                        <span class="checkmark"></span>
+                        Evening Cleansing
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" id="evening-moisturizing">
+                        <span class="checkmark"></span>
+                        Evening Moisturizing
+                    </label>
+                </div>
+            </div>
+            
+            <button id="enable-notifications" class="btn-primary">Enable Notifications</button>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="card actions-section">
+            <h2 class="section-title">
+                <span class="icon">⚡</span>
+                Quick Actions
+            </h2>
+            <div class="action-buttons">
+                <button id="reset-day" class="btn-warning">Reset Today</button>
+                <button id="check-reminders" class="btn-info">Check Reminders</button>
+            </div>
+        </section>
+
+        <!-- Installation Instructions -->
+        <div id="install-instructions" class="install-modal hidden">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeInstallModal()" aria-label="Close modal">×</button>
+                <h3>📱 Install Health Tracker</h3>
+                <p>Transform your browser experience into a native app!</p>
+                <div class="install-steps">
+                    <div class="install-step">
+                        <span class="step-icon">📱</span>
+                        <div class="step-content">
+                            <strong>Mobile:</strong> Tap "Add to Home Screen" in your browser menu
+                        </div>
+                    </div>
+                    <div class="install-step">
+                        <span class="step-icon">💻</span>
+                        <div class="step-content">
+                            <strong>Desktop:</strong> Look for the install icon in your browser's address bar
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button onclick="closeInstallModal()" class="btn-secondary">Maybe Later</button>
+                    <button onclick="triggerInstall()" class="btn-primary">Install Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

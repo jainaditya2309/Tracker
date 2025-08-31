@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator for Health Tracker PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        #preview {
+            margin: 20px;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px;
+        }
+        button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #5855eb;
+        }
+        .instructions {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏃‍♀️ Health Tracker PWA - Icon Generator</h1>
+    
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click "Generate Icons" to create all PWA icons</li>
+            <li>Icons will be automatically downloaded</li>
+            <li>Replace the placeholder icon files in your project</li>
+            <li>The icons feature a modern health/fitness design</li>
+        </ol>
+    </div>
+
+    <div id="preview">
+        <h3>Icon Preview:</h3>
+        <canvas id="preview-canvas" width="192" height="192"></canvas>
+    </div>
+
+    <button onclick="generateAllIcons()">Generate All Icons</button>
+    <button onclick="generatePreview()">Show Preview</button>
+
+    <script>
+        function drawHealthIcon(ctx, size) {
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#6366f1');
+            gradient.addColorStop(0.5, '#8b5cf6');
+            gradient.addColorStop(1, '#ec4899');
+            
+            // Draw background circle with shadow
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 4;
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 15, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            
+            // Draw health symbol (heart + cross)
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = size * 0.02;
+            
+            const centerX = size/2;
+            const centerY = size/2;
+            
+            // Draw cross/plus symbol
+            const crossSize = size * 0.12;
+            const crossThickness = size * 0.04;
+            
+            // Horizontal bar
+            ctx.fillRect(centerX - crossSize, centerY - crossThickness/2, crossSize * 2, crossThickness);
+            // Vertical bar  
+            ctx.fillRect(centerX - crossThickness/2, centerY - crossSize, crossThickness, crossSize * 2);
+            
+            // Draw small heart above the cross
+            const heartSize = size * 0.08;
+            const heartY = centerY - size * 0.25;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX, heartY + heartSize/2);
+            
+            // Left heart curve
+            ctx.bezierCurveTo(
+                centerX - heartSize/2, heartY - heartSize/4,
+                centerX - heartSize, heartY + heartSize/4,
+                centerX, heartY + heartSize
+            );
+            
+            // Right heart curve
+            ctx.bezierCurveTo(
+                centerX + heartSize, heartY + heartSize/4,
+                centerX + heartSize/2, heartY - heartSize/4,
+                centerX, heartY + heartSize/2
+            );
+            
+            ctx.fill();
+            
+            // Add small activity indicator (pulse line)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.lineWidth = size * 0.015;
+            ctx.lineCap = 'round';
+            
+            const pulseY = centerY + size * 0.25;
+            const pulseWidth = size * 0.3;
+            
+            ctx.beginPath();
+            ctx.moveTo(centerX - pulseWidth/2, pulseY);
+            ctx.lineTo(centerX - pulseWidth/4, pulseY);
+            ctx.lineTo(centerX - pulseWidth/6, pulseY - size * 0.06);
+            ctx.lineTo(centerX, pulseY + size * 0.04);
+            ctx.lineTo(centerX + pulseWidth/6, pulseY - size * 0.08);
+            ctx.lineTo(centerX + pulseWidth/4, pulseY);
+            ctx.lineTo(centerX + pulseWidth/2, pulseY);
+            ctx.stroke();
+        }
+        
+        function generateIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            drawHealthIcon(ctx, size);
+            
+            return canvas.toDataURL('image/png');
+        }
+        
+        function downloadImage(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            link.click();
+        }
+        
+        function generateAllIcons() {
+            const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            
+            sizes.forEach(size => {
+                const dataUrl = generateIcon(size);
+                downloadImage(dataUrl, `icon-${size}x${size}.png`);
+            });
+            
+            alert(`Generated ${sizes.length} icons! Check your downloads folder.`);
+        }
+        
+        function generatePreview() {
+            const canvas = document.getElementById('preview-canvas');
+            const ctx = canvas.getContext('2d');
+            drawHealthIcon(ctx, 192);
+        }
+        
+        // Generate preview on load
+        window.addEventListener('load', generatePreview);
+    </script>
+</body>
+</html>
