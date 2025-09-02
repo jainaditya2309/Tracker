@@ -1,0 +1,92 @@
+.skincare-tracker {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.product-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.product-form input,
+.product-form select {
+  flex: 1;
+  min-width: 120px;
+}
+
+.products-list {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-item:last-child {
+  border-bottom: none;
+}
+
+.product-info h3 {
+  margin: 0;
+  color: #333;
+}
+
+.product-info p {
+  margin: 5px 0 0;
+  color: #666;
+}
+
+.product-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.product-actions button {
+  padding: 5px 10px;
+  background: #f0f0f0;
+  color: #333;
+}
+
+.product-actions button:hover {
+  background: #e0e0e0;
+}
+
+.complete-routine {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.complete-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.complete-button:hover {
+  background-color: #45a049;
+}
+
+.complete-routine p {
+  color: #666;
+  margin: 10px 0 0;
+}
